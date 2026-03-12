@@ -60,12 +60,6 @@
                 🔧 Войти как мастер
             </a>
         </div>
-        <p style="color: #777; font-size: 14px; margin-top: 10px;">
-            Тестовые пользователи:<br>
-            Диспетчер: dispatcher@test.com / 123<br>
-            Мастер Иван: ivan@test.com / 123<br>
-            Мастер Пётр: petr@test.com / 123
-        </p>
     </div>
 </form>
 </body>

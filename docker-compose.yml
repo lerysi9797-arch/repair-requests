@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: repair-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./storage:/var/www/storage
+    networks:
+      - repair-network
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: repair-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: repair_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      MYSQL_USER: laravel
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - repair-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: repair-nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - repair-network
+    depends_on:
+      - app
+
+networks:
+  repair-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
